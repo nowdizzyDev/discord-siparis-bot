@@ -1,6 +1,0 @@
-node_modules/
-bot.db
-config.json
-.env
-*.db-shm
-*.db-wal
