@@ -1,0 +1,50 @@
+{
+  "basarili":     "✅",
+  "hata":         "❌",
+  "uyari":        "⚠️",
+  "sure":         "⏰",
+  "yeni":         "🆕",
+  "id":           "🆔",
+
+  "sepet":        "🛒",
+  "paket":        "📦",
+  "etiket":       "🏷️",
+  "stok":         "📊",
+  "para":         "💰",
+  "not":          "📝",
+  "liste":        "📋",
+  "pin":          "📌",
+  "takvim":       "📅",
+  "kapat":        "🔒",
+
+  "kullanici":    "👤",
+  "zil":          "🔔",
+  "kalkan":       "🛡️",
+  "anahtar":      "🔑",
+
+  "logkanal":     "📣",
+  "kategori":     "📁",
+  "ayar":         "⚙️",
+  "durum":        "📊",
+
+  "odeme":        "💳",
+  "paypal":       "💙",
+  "paycell":      "💜",
+  "papara":       "🧡",
+  "iban":         "🏦",
+
+  "yesil":        "🟢",
+  "sari":         "🟡",
+  "kirmizi":      "🔴",
+
+  "cizgi":        "─────────────────────────",
+
+  "ticket":       "🎫",
+  "onayla":       "✅",
+  "iptal":        "❌",
+  "detay":        "🔍",
+
+  "log_tamam":    "✅",
+  "log_iptal":    "❌",
+  "log_yeni":     "🆕"
+}
