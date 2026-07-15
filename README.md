@@ -50,7 +50,7 @@ node index.js
 
 | Komut | Açıklama | Kimin Kullanabileceği |
 |---|---|---|
-| `/menu` | Sipariş menüsünü açar | Herkes |
+| `/menu` | Sipariş menüsünü açar
 | `/setup` | Bot ayarlarını yapılandırır | Sadece Owner |
 | `/stok-ekle` | Stoğa yeni ürün ekler | Sadece Owner |
 | `/stok-sil` | Stoktan ürün kaldırır | Sadece Owner |
