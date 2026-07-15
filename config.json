@@ -2,5 +2,6 @@
   "token": "BOT_TOKENINI_YAZ",
   "clientId": "BOTUN_CLIENT_ID",
   "guildId": "SUNUCUNUN_ID",
-  "ownerId": "SENIN_DISCORD_ID"
+  "ownerId": "SENIN_DISCORD_ID",
+  "bannerUrl": "https://i.imgur.com/BANNER.png"
 }

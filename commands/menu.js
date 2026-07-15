@@ -1,10 +1,12 @@
 const {
   SlashCommandBuilder, ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder,
   ModalBuilder, TextInputBuilder, TextInputStyle, ContainerBuilder, TextDisplayBuilder,
-  SeparatorBuilder, SeparatorSpacingSize, ChannelType, PermissionsBitField, MessageFlags
+  SeparatorBuilder, SeparatorSpacingSize, MediaGalleryBuilder, MediaGalleryItemBuilder,
+  ChannelType, PermissionsBitField, MessageFlags
 } = require('discord.js');
 const { tumStoklar, stokGetir, getAyar, setAyar } = require('../database');
 const { ticketPanelGonder } = require('../handlers/ticketPanel');
+const { bannerUrl } = require('../config.json');
 const e = require('../emoji.json');
 
 module.exports = {
@@ -17,27 +19,52 @@ module.exports = {
 
     if (stoklar.length === 0) {
       return interaction.reply({
-        components: [new ContainerBuilder().addTextDisplayComponents(new TextDisplayBuilder().setContent(`## ${e.hata} Stok Boş\nŞu an satışta ürün bulunmuyor.`))],
+        components: [
+          new ContainerBuilder()
+            .addTextDisplayComponents(new TextDisplayBuilder().setContent(`## ${e.hata} Stok Boş\nŞu an satışta ürün bulunmuyor.`))
+        ],
         flags: MessageFlags.IsComponentsV2 | MessageFlags.Ephemeral
       });
     }
 
-    const urunMetni = stoklar.map(s =>
-      `${e.paket} **${s.urun_adi}** — \`${s.fiyat}₺\`  ${e.stok} **${s.adet}** adet` +
-      (s.aciklama ? `\n-# ${s.aciklama}` : '')
+    const urunListesi = stoklar.map(s =>
+      `${e.etiket} **${s.urun_adi}** — \`${s.fiyat}₺\` ${e.stok} **${s.adet}** adet` +
+      (s.aciklama ? `\n> -# ${s.aciklama}` : '')
     ).join('\n');
 
     const container = new ContainerBuilder()
-      .addTextDisplayComponents(new TextDisplayBuilder().setContent(`## ${e.sepet} Sipariş Menüsü`))
-      .addTextDisplayComponents(new TextDisplayBuilder().setContent(`> Almak istediğin ürünü seç, kaç adet istediğini gir.`))
-      .addSeparatorComponents(new SeparatorBuilder().setSpacing(SeparatorSpacingSize.Small).setDivider(true))
-      .addTextDisplayComponents(new TextDisplayBuilder().setContent(urunMetni))
-      .addSeparatorComponents(new SeparatorBuilder().setSpacing(SeparatorSpacingSize.Small).setDivider(true))
+      .addMediaGalleryComponents(
+        new MediaGalleryBuilder().addItems(
+          new MediaGalleryItemBuilder().setURL(bannerUrl)
+        )
+      )
+      .addSeparatorComponents(new SeparatorBuilder().setSpacing(SeparatorSpacingSize.Large))
+      .addTextDisplayComponents(new TextDisplayBuilder().setContent(
+        `## ${e.sepet} Sipariş Menüsü\n\n` +
+        `${e.zil} Sipariş vermeden önce aşağıdaki bilgileri okuyunuz.\n` +
+        `Ürünü seçip adet girerek siparişinizi oluşturabilirsiniz.`
+      ))
+      .addSeparatorComponents(new SeparatorBuilder().setSpacing(SeparatorSpacingSize.Small))
+      .addTextDisplayComponents(new TextDisplayBuilder().setContent(
+        `${e.liste} **Sipariş Kuralları:**\n` +
+        `> ${e.basarili} Siparişinizi verdikten sonra kanalınızı 24 saat içinde kontrol ediniz.\n` +
+        `> ${e.basarili} Ödemeyi yaptıktan sonra ekran görüntüsünü kanala atınız.\n` +
+        `> ${e.basarili} Yetkililere özel mesaj atmak yerine ticket kanalını kullanınız.`
+      ))
+      .addSeparatorComponents(new SeparatorBuilder().setSpacing(SeparatorSpacingSize.Small))
+      .addTextDisplayComponents(new TextDisplayBuilder().setContent(
+        `${e.paket} **Mevcut Ürünler:**\n${urunListesi}`
+      ))
+      .addSeparatorComponents(new SeparatorBuilder().setSpacing(SeparatorSpacingSize.Small))
+      .addTextDisplayComponents(new TextDisplayBuilder().setContent(
+        `-# ${e.sure} Siparişleriniz en kısa sürede işleme alınacaktır.`
+      ))
+      .addSeparatorComponents(new SeparatorBuilder().setSpacing(SeparatorSpacingSize.Small))
       .addActionRowComponents(
         new ActionRowBuilder().addComponents(
           new StringSelectMenuBuilder()
             .setCustomId('menu_urun_sec')
-            .setPlaceholder(`${e.sepet} Bir ürün seç...`)
+            .setPlaceholder(`${e.paket} Bir ürün seçin...`)
             .addOptions(stoklar.map(s =>
               new StringSelectMenuOptionBuilder()
                 .setLabel(s.urun_adi)
@@ -48,7 +75,11 @@ module.exports = {
         )
       );
 
-    const { resource } = await interaction.reply({ components: [container], flags: MessageFlags.IsComponentsV2, withResponse: true });
+    const { resource } = await interaction.reply({
+      components: [container],
+      flags: MessageFlags.IsComponentsV2,
+      withResponse: true
+    });
     const reply = resource.message;
     setAyar('menu_kanal_id', reply.channelId);
     setAyar('menu_mesaj_id', reply.id);
@@ -57,7 +88,7 @@ module.exports = {
 
 async function menuSelectIsle(interaction) {
   const urunId = parseInt(interaction.values[0]);
-  const urun = stokGetir(urunId);
+  const urun   = stokGetir(urunId);
 
   if (!urun || urun.adet <= 0) {
     return interaction.reply({
@@ -134,8 +165,8 @@ async function menuAdetModalIsle(interaction) {
 }
 
 async function ticketAc(interaction, urun, adet = 1) {
-  const guild = interaction.guild;
-  const user  = interaction.user;
+  const guild        = interaction.guild;
+  const user         = interaction.user;
   const kategoriId   = getAyar('kategori_id');
   const yetkiliRolId = getAyar('yetkili_rol_id');
 
