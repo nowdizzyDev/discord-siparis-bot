@@ -2,9 +2,11 @@
   "_açıklama": {
     "token": "Discord Developer Portal'dan alınan bot token'ı — Bot > Reset Token",
     "clientId": "Discord'da botun uygulama ID'si — Developer Portal > General Information > Application ID",
-    "guildId": "Komutların kaydedileceği sunucunun ID'si — Sunucuya sağ tık > ID Kopyala (Geliştirici Modu açık olmalı)"
+    "guildId": "Komutların kaydedileceği sunucunun ID'si — Sunucuya sağ tık > ID Kopyala (Geliştirici Modu açık olmalı)",
+    "ownerId": "Botu yönetecek kişinin Discord kullanıcı ID'si — Kendine sağ tık > ID Kopyala"
   },
   "token": "BOT_TOKENINI_BURAYA_YAZ",
   "clientId": "BOTUN_CLIENT_ID",
-  "guildId": "SUNUCUNUN_ID"
+  "guildId": "SUNUCUNUN_ID",
+  "ownerId": "SENIN_DISCORD_ID"
 }
